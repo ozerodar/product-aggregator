@@ -1,4 +1,5 @@
 """Tests for products"""
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.urls import reverse
@@ -33,7 +34,7 @@ class PublicProductTest(TestCase):
 
         res = self.client.get(URL_PRODUCT_LIST)
 
-        serializer = ProductSerializer(Product.objects.all(), many=True)
+        serializer = ProductSerializer(Product.objects.all().order_by("-id"), many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
@@ -49,7 +50,9 @@ class PublicProductTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(serializer.data, res.data)
 
-    def test_create_product(self):
+    @patch('requests.post')  # This mocks 'requests.post'
+    @patch('product.services.get_token')  # This mocks 'requests.post'
+    def test_create_product(self, mock_register, mock_token):
         """Test creating a product"""
 
         payload = {'name': 'New product', 'description': 'Some description'}
@@ -100,3 +103,18 @@ class PublicProductTest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Product.objects.filter(id=product.id).exists())
+
+    @patch('requests.post')  # This mocks 'requests.post'
+    @patch('product.services.get_token')  # This mocks 'requests.post'
+    def test_register_product(self, mock_post, mock_token):
+        """Test that the product was registered at an external service after creation"""
+
+        mock_response = mock_post.return_value
+        mock_response.status_code = 201
+        mock_response.json.return_value = {"id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}
+
+        payload = {"name": "Test Product", "description": "This is a test product"}
+        self.client.post(URL_PRODUCT_LIST, payload)
+
+        # Check that the mock POST was called
+        mock_post.assert_called_once()

@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.models import Product
 from product import serializers
+from product.services import register_product
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -24,3 +25,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             return serializers.ProductSerializer
 
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Override perform_create to register product at external server"""
+        serializer.save()  # Save the product in the db
+        register_product(serializer.data)  # Register it on the external server
