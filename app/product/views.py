@@ -1,10 +1,11 @@
 """Views for the products APIs"""
 
-from rest_framework import viewsets
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
-from core.models import Product
+from core.models import Offer, Product
+from offer.serializers import OfferSerializer
 from product import serializers
 from product.services import register_product
 
@@ -30,3 +31,23 @@ class ProductViewSet(viewsets.ModelViewSet):
         """Override perform_create to register product at external server"""
         serializer.save()  # Save the product in the db
         register_product(serializer.data)  # Register it on the external server
+
+    @action(detail=False, methods=['delete'], url_path='')
+    def delete_all(self, request):
+        """Delete all products"""
+        Product.objects.all().delete()
+        return Response({'status': 'All Products Deleted'}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['get'], url_path='offers')
+    def get_offers(self, request, pk):
+        """Get the offers from the external server"""
+        offers = Offer.objects.filter(product_id=pk)
+        serializer = OfferSerializer(offers, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='offers')
+    def get_all_offers(self, request):
+        """Get the offers from the external server"""
+        offers = Offer.objects.all()
+        serializer = OfferSerializer(offers, many=True)
+        return Response(serializer.data)

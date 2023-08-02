@@ -1,5 +1,7 @@
 import os
 
+from datetime import timedelta
+
 from celery import Celery
 from celery.schedules import crontab
 
@@ -18,8 +20,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    'add-every-30-seconds': {
+    'fetch-offers-every-120-seconds': {
         'task': 'offer.tasks.fetch_offers',
-        'schedule': 5.0,
+        'schedule': timedelta(seconds=120),
     },
 }

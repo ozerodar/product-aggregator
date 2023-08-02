@@ -25,11 +25,8 @@ def register_product(product_data):
     }
 
     try:
-        print(headers)
-        print(product_data)
         res = requests.post(URL_REGISTER_PRODUCT, headers=headers, json=product_data)
         res.raise_for_status()
-        print(f'Response status code: {res.status_code}')
-        print(f'Product registered with id: {res.json()}')
+        print(f'Product registered successfully')
     except Exception as e:
         print(f"Failed to register product: {e}")

@@ -31,7 +31,8 @@ class AccessToken(models.Model):
     @classmethod
     def get_valid_token(cls):
         try:
-            token_obj = cls.objects.get(expires_at__gt=timezone.now())
-            return token_obj.token
+            token_obj = cls.objects.filter(expires_at__gt=timezone.now())
+            if token_obj:
+                return token_obj[0].token
         except cls.DoesNotExist:
             return None
