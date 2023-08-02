@@ -18,12 +18,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    'fetch-offers-every-minute': {
-        'task': 'app.offer.tasks.fetch_offers',
-        'schedule': crontab(minute='*/1'),  # Runs every minute
+    'add-every-30-seconds': {
+        'task': 'offer.tasks.fetch_offers',
+        'schedule': 5.0,
     },
 }
-
-@app.task(bind=True, ignore_result=True)
-def debug_task(self):
-    print(f'Request: {self.request!r}')

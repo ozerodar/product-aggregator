@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
+    'django_celery_results',
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
     "core",
+    "offer",
     "product",
 ]
 
@@ -135,3 +138,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+# Celery configuration
+
+# save Celery task results in Django's database
+# CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_REDIS_URL')
+
+# This configures Redis as the datastore between Django + Celery
+# CELERY_BROKER_URL = os.getenv('CELERY_BROKER_REDIS_URL')
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+# this allows you to schedule items in the Django admin.
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

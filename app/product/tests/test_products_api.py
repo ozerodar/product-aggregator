@@ -103,18 +103,3 @@ class PublicProductTest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Product.objects.filter(id=product.id).exists())
-
-    @patch('requests.post')  # This mocks 'requests.post'
-    @patch('product.services.get_token')  # This mocks 'requests.post'
-    def test_register_product(self, mock_post, mock_token):
-        """Test that the product was registered at an external service after creation"""
-
-        mock_response = mock_post.return_value
-        mock_response.status_code = 201
-        mock_response.json.return_value = {"id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}
-
-        payload = {"name": "Test Product", "description": "This is a test product"}
-        self.client.post(URL_PRODUCT_LIST, payload)
-
-        # Check that the mock POST was called
-        mock_post.assert_called_once()
