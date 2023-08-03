@@ -34,16 +34,16 @@ This repository contains a REST API JSON Python microservice designed to allow u
     ```bash
     docker-compose up
 
-The service will be available at 127.0.0.1:8000.
+The service will be available at *127.0.0.1:8000*.
 
 ### User Authentication
 
-1. Create a user via request POST /api/user/create. Provide email and password in the request body (you can use simple email and password, we won't judge).
+1. Create a user via request ``POST /api/user/create``. Provide email and password in the request body (you can use simple email and password, we won't judge).
 
-2. Generate a token using your email and password via request POST /api/user/token
+2. Generate a token using your email and password via request ``POST /api/user/token``
 
 3. Use the token in the Authorization header for other endpoints:
-    Authorization: Token {your_token}
+    Authorization: ``Token {your_token}``
 
 ## Usage
 
@@ -53,6 +53,7 @@ The service will be available at 127.0.0.1:8000.
 
 ## Running test
 
-Tests are written using pytest. Run them with:
+- Tests are written using Django. Run them with:
+
     ```bash
     docker-compose run --rm app sh -c "python manage.py test"
