@@ -24,7 +24,7 @@ This repository contains a REST API JSON Python microservice designed to allow u
 1. Clone the repository:
 
    ```bash
-    git clone https://github.com/ozerodar/product-aggregator.git
+    git clone https://github.com/ozerodar/product-aggregator.git && cd product-aggregator
 
 2. Build a docker image
     ```bash
@@ -34,7 +34,7 @@ This repository contains a REST API JSON Python microservice designed to allow u
     ```bash
     docker-compose up
 
-The service will be available at *127.0.0.1:8000*.
+The Swagger will be available at [127.0.0.1:8000](http://127.0.0.1:8000/api/docs/#/).
 
 ### User Authentication
 
