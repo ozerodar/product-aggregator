@@ -1,4 +1,6 @@
 from unittest.mock import patch
+
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from core.models import Product
@@ -6,10 +8,13 @@ from offer.tasks import fetch_offers
 
 class FetchOffersTest(TestCase):
 
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(email="user@example.com", password="pass123")
+
     @patch('requests.get')
     @patch('offer.tasks.get_token')
     def test_fetch_offers(self, mock_get_token, mock_get):
-        product = Product.objects.create(name='Product 1', id="11e3a9c1-afc1-f54c-be83-69a6f8470c19")
+        product = Product.objects.create(user=self.user, name='Product 1', id="11e3a9c1-afc1-f54c-be83-69a6f8470c19")
 
         mock_get_token.return_value = 'fake_token'
 

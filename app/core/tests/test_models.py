@@ -1,6 +1,7 @@
 """Test for models"""
 import datetime
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
@@ -25,7 +26,8 @@ class ModelsTests(TestCase):
         """Test creating a product"""
 
         product_description = 'test description'
-        new_product = models.Product.objects.create(name='test product', description=product_description)
+        user = get_user_model().objects.create_user("test@example.com", "pass123")
+        new_product = models.Product.objects.create(user=user, name='test product', description=product_description)
 
         product = models.Product.objects.get(id=new_product.id)
         self.assertEqual(new_product.name, product.name)
@@ -34,7 +36,8 @@ class ModelsTests(TestCase):
     def test_create_offer(self):
         """Test creating an offer"""
 
-        product = models.Product.objects.create(name='test product', description='Something')
+        user = get_user_model().objects.create_user("test@example.com", "pass123")
+        product = models.Product.objects.create(user=user, name='test product', description='Something')
         new_offer = models.Offer.objects.create(product=product, price=10, items_in_stock=10)
 
         offer = models.Offer.objects.get(id=new_offer.id)

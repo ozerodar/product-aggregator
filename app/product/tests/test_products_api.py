@@ -1,6 +1,7 @@
 """Tests for products"""
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
@@ -15,9 +16,14 @@ URL_PRODUCT_LIST = reverse('product:product-list')
 get_url_product_detail = lambda product_id: reverse('product:product-detail', args=[product_id])
 
 
-def create_product(name='Test product', description='Test description'):
+def create_product(user, name='Test product', description='Test description'):
     """Create a product"""
-    return Product.objects.create(name=name, description=description)
+    return Product.objects.create(user=user, name=name, description=description)
+
+
+def create_user(**params):
+    """Create and and return a new user"""
+    return get_user_model().objects.create_user(**params)
 
 
 class PublicProductTest(TestCase):
@@ -25,12 +31,14 @@ class PublicProductTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.user = create_user(email="user@example.com", password="pass123")
+        self.client.force_authenticate(self.user)
 
     def test_retrieve_products(self):
         """Test retrieving products"""
 
-        create_product()
-        create_product()
+        create_product(user=self.user)
+        create_product(user=self.user)
 
         res = self.client.get(URL_PRODUCT_LIST)
 
@@ -41,7 +49,7 @@ class PublicProductTest(TestCase):
     def test_retrieve_product_detail(self):
         """Test retrieving product detail"""
 
-        product = create_product()
+        product = create_product(user=self.user)
 
         url = get_url_product_detail(product_id=product.id)
         res = self.client.get(url)
@@ -67,7 +75,7 @@ class PublicProductTest(TestCase):
         """Test updating some attributes of a product"""
 
         original_description = 'Original description'
-        product = create_product(description=original_description)
+        product = create_product(user=self.user, description=original_description)
         payload = {'name': 'New name'}
 
         url = get_url_product_detail(product_id=product.id)
@@ -82,7 +90,7 @@ class PublicProductTest(TestCase):
         """Test updating a product"""
 
         original_description = 'Original description'
-        product = create_product(description=original_description)
+        product = create_product(user=self.user, description=original_description)
         payload = {'name': 'New name', 'description': 'New description'}
 
         url = get_url_product_detail(product_id=product.id)
@@ -96,7 +104,7 @@ class PublicProductTest(TestCase):
     def test_delete_product(self):
         """Test deleting a product"""
 
-        product = create_product()
+        product = create_product(user=self.user)
 
         url = get_url_product_detail(product_id=product.id)
         res = self.client.delete(url)

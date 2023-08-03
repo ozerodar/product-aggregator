@@ -3,6 +3,8 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from core.models import Offer, Product
 from offer.serializers import OfferSerializer
@@ -15,10 +17,12 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.ProductDetailSerializer
     queryset = Product.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Retrieve the products"""
-        return self.queryset.order_by('-id')
+        return self.queryset.filter(user=self.request.user).order_by('-id')
 
     def get_serializer_class(self):
         """Return the serializer class for request"""
@@ -29,7 +33,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override perform_create to register product at external server"""
-        serializer.save()  # Save the product in the db
+        serializer.save(user=self.request.user)  # Save the product in the db
         register_product(serializer.data)  # Register it on the external server
 
     @action(detail=False, methods=['delete'], url_path='')

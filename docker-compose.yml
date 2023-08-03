@@ -18,7 +18,7 @@ services:
       - ./.env
     environment:
       - DB_HOST=db
-      - DB_NAME=aggregatordb
+      - DB_NAME=aggregator
       - DB_USER=devuser
       - DB_PASSWORD=changeme
     depends_on:
@@ -29,7 +29,7 @@ services:
     volumes:
       - dev-aggregator-db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=aggregatordb
+      - POSTGRES_DB=aggregator
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
     ports:
@@ -44,11 +44,11 @@ services:
       - ./app:/app
     environment:
       - POSTGRES_HOST=db
-      - POSTGRES_DB=aggregatordb
+      - POSTGRES_DB=aggregator
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
       - DB_HOST=db
-      - DB_NAME=aggregatordb
+      - DB_NAME=aggregator
       - DB_USER=devuser
       - DB_PASSWORD=changeme
       - APPLIFTING_API_TOKEN=5981c742-831d-41f9-9c8f-23c1706bf27d
