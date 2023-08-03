@@ -57,3 +57,7 @@ The service will be available at *127.0.0.1:8000*.
 
     ```bash
     docker-compose run --rm app sh -c "python manage.py test"
+
+### Notes
+
+Note that offers for products get updated every 2 minutes so when you create a new product they might not come right away (wait a minute or so).
