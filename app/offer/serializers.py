@@ -7,4 +7,4 @@ from core.models import Offer
 class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
-        fields = ['product', 'price', 'items_in_stock']
+        fields = ["product", "price", "items_in_stock"]

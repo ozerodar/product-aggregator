@@ -54,7 +54,7 @@ class Offer(models.Model):
     """Offer model"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='offers')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="offers")
     price = models.PositiveIntegerField()
     items_in_stock = models.PositiveIntegerField()
 

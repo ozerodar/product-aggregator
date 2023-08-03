@@ -6,7 +6,7 @@ from celery import shared_task
 from core.services import get_token
 from core.models import Offer, Product
 
-APPLIFTING_API = os.getenv('URL_OFFERS')
+APPLIFTING_API = os.getenv("URL_OFFERS")
 URL_OFFERS = f"{APPLIFTING_API}/products/{{product_id}}/offers"
 
 
@@ -14,9 +14,9 @@ URL_OFFERS = f"{APPLIFTING_API}/products/{{product_id}}/offers"
 def fetch_offers():
     """Periodic task for fetching orders"""
     token = get_token()
-    headers = {'Bearer': token}
+    headers = {"Bearer": token}
 
-    print(f'Fetching offers for {Product.objects.count()} products', flush=True)
+    print(f"Fetching offers for {Product.objects.count()} products", flush=True)
 
     for product in Product.objects.all():
         url = URL_OFFERS.format(product_id=product.id)
@@ -36,10 +36,9 @@ def fetch_offers():
 
         # Create new offers based on the response
         for offer_data in offers_data:
-
             Offer.objects.create(
-                id=offer_data['id'],
-                price=offer_data['price'],
-                items_in_stock=offer_data['items_in_stock'],
+                id=offer_data["id"],
+                price=offer_data["price"],
+                items_in_stock=offer_data["items_in_stock"],
                 product=product,
             )

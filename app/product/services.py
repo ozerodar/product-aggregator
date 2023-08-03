@@ -1,7 +1,6 @@
 """External services utilities and API calls."""
 
 import requests
-import os
 
 from core.services import get_token
 
@@ -20,13 +19,13 @@ def register_product(product_data):
     """
     token = get_token()
     headers = {
-        'Bearer': token,
-        'Content-Type': 'application/json',
+        "Bearer": token,
+        "Content-Type": "application/json",
     }
 
     try:
         res = requests.post(URL_REGISTER_PRODUCT, headers=headers, json=product_data)
         res.raise_for_status()
-        print(f'Product registered successfully')
+        print("Product registered successfully")
     except Exception as e:
         print(f"Failed to register product: {e}")

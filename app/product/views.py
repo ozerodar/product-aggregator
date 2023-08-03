@@ -22,11 +22,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieve the products"""
-        return self.queryset.filter(user=self.request.user).order_by('-id')
+        return self.queryset.filter(user=self.request.user).order_by("-id")
 
     def get_serializer_class(self):
         """Return the serializer class for request"""
-        if self.action == 'list':
+        if self.action == "list":
             return serializers.ProductSerializer
 
         return self.serializer_class
@@ -36,20 +36,20 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)  # Save the product in the db
         register_product(serializer.data)  # Register it on the external server
 
-    @action(detail=False, methods=['delete'], url_path='')
+    @action(detail=False, methods=["delete"], url_path="")
     def delete_all(self, request):
         """Delete all products"""
         Product.objects.all().delete()
-        return Response({'status': 'All Products Deleted'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"status": "All Products Deleted"}, status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=True, methods=['get'], url_path='offers')
+    @action(detail=True, methods=["get"], url_path="offers")
     def get_offers(self, request, pk):
         """Get the offers from the external server"""
         offers = Offer.objects.filter(product_id=pk)
         serializer = OfferSerializer(offers, many=True)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['get'], url_path='offers')
+    @action(detail=False, methods=["get"], url_path="offers")
     def get_all_offers(self, request):
         """Get the offers from the external server"""
         offers = Offer.objects.all()

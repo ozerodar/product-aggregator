@@ -4,54 +4,52 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0001_initial'),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='user',
+            name="user",
             options={},
         ),
         migrations.AlterModelManagers(
-            name='user',
-            managers=[
-            ],
+            name="user",
+            managers=[],
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='date_joined',
+            model_name="user",
+            name="date_joined",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='first_name',
+            model_name="user",
+            name="first_name",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='is_active',
+            model_name="user",
+            name="is_active",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='is_staff',
+            model_name="user",
+            name="is_staff",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='last_name',
+            model_name="user",
+            name="last_name",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='username',
+            model_name="user",
+            name="username",
         ),
         migrations.AddField(
-            model_name='user',
-            name='name',
-            field=models.CharField(default='user', max_length=255),
+            model_name="user",
+            name="name",
+            field=models.CharField(default="user", max_length=255),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='user',
-            name='email',
+            model_name="user",
+            name="email",
             field=models.EmailField(max_length=255, unique=True),
         ),
     ]

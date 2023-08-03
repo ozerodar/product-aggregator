@@ -9,8 +9,8 @@ from django.utils import timezone
 from core.models import AccessToken
 
 
-APPLIFTING_API = os.getenv('URL_OFFERS')
-APPLIFTING_API_TOKEN = os.getenv('APPLIFTING_API_TOKEN')
+APPLIFTING_API = os.getenv("URL_OFFERS")
+APPLIFTING_API_TOKEN = os.getenv("APPLIFTING_API_TOKEN")
 URL_TOKEN = f"{APPLIFTING_API}/auth"
 
 
@@ -27,13 +27,13 @@ def get_auth_token() -> str:
     if not APPLIFTING_API_TOKEN:
         raise Exception("APPLIFTING_API_TOKEN environment variable is not set")
 
-    headers = {'Bearer': APPLIFTING_API_TOKEN, 'Content-Type': 'application/json'}
+    headers = {"Bearer": APPLIFTING_API_TOKEN, "Content-Type": "application/json"}
 
     try:
         response = requests.post(URL_TOKEN, headers=headers)
     except Exception as e:
-        print("Failed to get auth token")
-    return response.json().get('access_token')
+        print(f"Failed to get auth token: {e}")
+    return response.json().get("access_token")
 
 
 def get_token() -> str:

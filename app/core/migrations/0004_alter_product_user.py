@@ -6,15 +6,14 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0003_product_user'),
+        ("core", "0003_product_user"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='user',
+            model_name="product",
+            name="user",
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]
