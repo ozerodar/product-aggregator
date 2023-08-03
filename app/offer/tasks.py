@@ -1,4 +1,4 @@
-import sys
+import os
 import requests
 
 from celery import shared_task
@@ -6,7 +6,7 @@ from celery import shared_task
 from core.services import get_token
 from core.models import Offer, Product
 
-APPLIFTING_API = "https://python.exercise.applifting.cz/api/v1"
+APPLIFTING_API = os.getenv('URL_OFFERS')
 URL_OFFERS = f"{APPLIFTING_API}/products/{{product_id}}/offers"
 
 

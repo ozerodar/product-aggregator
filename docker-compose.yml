@@ -52,6 +52,7 @@ services:
       - DB_USER=devuser
       - DB_PASSWORD=changeme
       - APPLIFTING_API_TOKEN=5981c742-831d-41f9-9c8f-23c1706bf27d
+      - URL_OFFERS=https://python.exercise.applifting.cz/api/v1
     depends_on:
       - redis
       - app

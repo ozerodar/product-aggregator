@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
@@ -25,5 +27,5 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="api-schema")),
     path('api/product/', include('product.urls')),
-    path('api/offer/', include('offer.urls'))
+    path('api/token/', obtain_auth_token, name='obtain-token'),
 ]

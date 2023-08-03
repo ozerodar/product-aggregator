@@ -9,7 +9,7 @@ from django.utils import timezone
 from core.models import AccessToken
 
 
-APPLIFTING_API = "https://python.exercise.applifting.cz/api/v1"
+APPLIFTING_API = os.getenv('URL_OFFERS')
 APPLIFTING_API_TOKEN = os.getenv('APPLIFTING_API_TOKEN')
 URL_TOKEN = f"{APPLIFTING_API}/auth"
 
